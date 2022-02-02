@@ -1,0 +1,43 @@
+extends layout
+
+block contenido 
+    .contenido-principal
+        h1 #{nombrePagina}- #{proyecto.nombre}
+
+
+        form.agregar-tarea(action=`/proyectos/${proyecto.url}` method="POST")
+
+            .campo 
+                label(for="tarea") Tarea:
+                input.nombre-tarea(type="text" name="tarea" placeholder="Nombre Tarea")
+            .campo.enviar 
+                input.boton-nueva-tarea(type="submit" value="Agregar" class="boton") 
+        
+        //- pre=vardump(tareas)  
+
+
+        .listado-pendientes 
+            ul
+                if (tareas.length>0) 
+                    each tarea in tareas 
+                        li.tarea(data-tarea=tarea.id) 
+                            p=tarea.tarea     
+                            .acciones
+                                if(tarea.estado)
+                                    i.icono.completo 💚
+                                else
+                                    i.icono 🖤
+                                i.eliminar ❌
+                else 
+                    p No existen Tareas Para Realizar
+
+
+        .avance 
+            h2 Avance del Proyecto 
+            #barra-avance.barra-avance 
+                #porcentaje.porcentaje
+
+
+        .contenedor-acciones 
+            a(href=`/proyecto/editar/${proyecto.id}` class="boton") Editar 
+            button#eliminar-proyectos(data-proyecto-url=proyecto.url type="button" class="boton eliminar") Eliminar
